@@ -8,13 +8,11 @@ import LoginPage from './LoginPage';
 
 import { RootState } from './../utils/store';
 
-
 import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { useSelector } from 'react-redux';
 import { config } from '@gluestack-ui/config';
 import Dashboard from './Dashboard';
 
-const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
 
 export default function AppRouter() {
@@ -27,10 +25,10 @@ export default function AppRouter() {
         <MainStack.Navigator initialRouteName="Login">
           <MainStack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
           <MainStack.Screen name="Main" component={Dashboard} options={{ headerShown: false }} />
-          <MainStack.Screen name="BooksList" component={BooksListPage} />
-          <MainStack.Screen name="AuthorsList" component={AuthorsListPage} />
-          <Stack.Screen name="BookDetails" component={BookDetailsPage} />
-          <Stack.Screen name="AuthorDetails" component={AuthorDetailsPage} />
+          <MainStack.Screen name="BooksList" component={BooksListPage} options={{ headerTitle: "Books List" }} />
+          <MainStack.Screen name="AuthorsList" component={AuthorsListPage} options={{ headerTitle: "Authors List" }}/>
+          <MainStack.Screen name="BookDetails"  component={BookDetailsPage} options={{ headerTitle: "Book Details" }}/>
+          <MainStack.Screen name="AuthorDetails" component={AuthorDetailsPage} options={{ headerTitle: "Author Details" }} />
         </MainStack.Navigator>
       </NavigationContainer>
     </GluestackUIProvider>
