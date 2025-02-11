@@ -1,4 +1,4 @@
-import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BooksListPage from './BooksListPage';
 import BookDetailsPage from './BookDetailsPage';
@@ -10,8 +10,9 @@ import { RootState } from './../utils/store';
 
 import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { useSelector } from 'react-redux';
-import { config } from '@gluestack-ui/config';
+import { config } from '@/gluestack-ui.config';
 import Dashboard from './Dashboard';
+import { COLORMODES } from '@gluestack-style/react/lib/typescript/types';
 
 const MainStack = createStackNavigator();
 
@@ -20,7 +21,7 @@ export default function AppRouter() {
   const theme = useSelector((state: RootState) => state.theme);
 
   return (
-    <GluestackUIProvider colorMode={"light"} config={config}>
+    <GluestackUIProvider colorMode={theme.darkMode as COLORMODES} config={config}>
       <NavigationContainer>
         <MainStack.Navigator initialRouteName="Login">
           <MainStack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />

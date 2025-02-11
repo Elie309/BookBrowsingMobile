@@ -1,20 +1,15 @@
 import { Box, Button, EyeIcon, EyeOffIcon, Heading, Icon, 
     Input, InputField, InputSlot, Text, KeyboardAvoidingView } from '@gluestack-ui/themed';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import Logo from '@/utils/Logo';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '@/utils/slices/userSlice';
+import { RootState } from '@/utils/store';
 
 const users = [
-    {
-        username: "123",
-        password: "123",
-        role: "all"
-
-    },
-    {
+   {
         username: "grappasystems3@gmail.com",
         password: "GSRecruit2025",
         role: "all"
@@ -40,34 +35,45 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
+    const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
+    
+    useEffect(() => {
+
+        if(user.isAuthenticated) {
+            navigation.replace('Main');
+        }
+
+        setUsername('');
+        setPassword('');
+    }, [navigation, user.isAuthenticated]);
 
     const handleLogin = () => {
 
-        // if (!username || !password) {
-        //     setError('Please enter username and password.');
-        //     return;
-        // }
+        if (!username || !password) {
+            setError('Please enter username and password.');
+            return;
+        }
 
-        // if(username.length < 3) {
-        //     setError('Username must be at least 3 characters long.');
-        //     return;
-        // }
+        if(username.length < 3) {
+            setError('Username must be at least 3 characters long.');
+            return;
+        }
 
-        // if (password.length < 8) {
-        //     setError('Password must be at least 8 characters long.');
-        //     return;
-        // }
+        if (password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return;
+        }
 
-        // const user = users.find(user => user.username === username && user.password === password);
-        // if (user) {
+        const user = users.find(user => user.username === username && user.password === password);
+        if (user) {
             setError('');
-            dispatch(login({ username: "123", role: "books" }));
-            navigation.navigate('Main');
+            dispatch(login({ username: user.username ,role: user.role }));
+            navigation.replace('Main');
 
-        // } else {
-        //     setError('Invalid username or password.');
-        // }
+        } else {
+            setError('Invalid username or password.');
+        }
     };
 
     return (
@@ -91,6 +97,7 @@ export default function LoginPage() {
                         style={{ width: '100%' }}
                     >
                         <InputField
+                            type='text'
                             placeholder='Username or email'
                             value={username}
                             onChangeText={(value) => setUsername(value)}
