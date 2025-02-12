@@ -6,22 +6,20 @@ import AuthorsListPage from './AuthorsListPage';
 import AuthorDetailsPage from './AuthorDetailsPage';
 import LoginPage from './LoginPage';
 
-import { RootState } from './../utils/store';
 
 import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { useSelector } from 'react-redux';
 import { config } from '@/gluestack-ui.config';
 import Dashboard from './Dashboard';
-import { COLORMODES } from '@gluestack-style/react/lib/typescript/types';
 
 const MainStack = createStackNavigator();
 
 export default function AppRouter() {
 
-  const theme = useSelector((state: RootState) => state.theme);
+  // DARK MODE IS NOT WORKING
+  // const theme = useSelector((state: RootState) => state.theme);
 
   return (
-    <GluestackUIProvider colorMode={theme.darkMode as COLORMODES} config={config}>
+    <GluestackUIProvider colorMode={"light"} config={config}>
       <NavigationContainer>
         <MainStack.Navigator initialRouteName="Login">
           <MainStack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
